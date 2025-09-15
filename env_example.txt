@@ -2,12 +2,12 @@
 # Copy this file to .env and update the values
 
 # AWS Configuration
-AWS_REGION=us-west-2
-ENDPOINT_URL=https://bedrock-agentcore-control.us-west-2.amazonaws.com
+AWS_REGION=us-east-1
+ENDPOINT_URL=https://bedrock-agentcore-control.us-east-1.amazonaws.com
 
 # Lambda Configuration
 LAMBDA_FUNCTION_NAME=WildfireDetectionLambda
-LAMBDA_ARN=arn:aws:lambda:us-west-2:your-account-id:function:WildfireDetectionLambda
+LAMBDA_ARN=arn:aws:lambda:us-east-1:your-account-id:function:WildfireDetectionLambda
 
 # Gateway Configuration
 GATEWAY_IDENTIFIER=your-gateway-identifier
@@ -16,7 +16,7 @@ GATEWAY_DESCRIPTION=Wildfire Early-Warning and Triage Gateway
 ROLE_ARN=arn:aws:iam::your-account-id:role/YourGatewayRole
 
 # Gateway Observability (auto-populated by deploy script)
-GATEWAY_ARN=arn:aws:bedrock-agentcore:us-west-2:your-account-id:gateway/your-gateway-id
+GATEWAY_ARN=arn:aws:bedrock-agentcore:us-east-1:your-account-id:gateway/your-gateway-id
 GATEWAY_ID=your-gateway-id
 
 # Target Configuration
@@ -26,15 +26,15 @@ TARGET_DESCRIPTION=Wildfire Detection and Threat Assessment Target
 # Cognito Configuration for Gateway/Runtime
 COGNITO_USERPOOL_ID=your-gateway-cognito-userpool-id
 COGNITO_APP_CLIENT_ID=your-gateway-cognito-app-client-id
-COGNITO_DOMAIN=your-gateway-cognito-domain.auth.us-west-2.amazoncognito.com
+COGNITO_DOMAIN=your-gateway-cognito-domain.auth.us-east-1.amazoncognito.com
 COGNITO_CLIENT_SECRET=your-gateway-cognito-client-secret
-COGNITO_DISCOVERY_URL=https://your-gateway-cognito-domain.auth.us-west-2.amazoncognito.com/.well-known/openid-configuration
-COGNITO_AUTH_URL=https://your-gateway-cognito-domain.auth.us-west-2.amazoncognito.com/oauth2/authorize
-COGNITO_TOKEN_URL=https://your-gateway-cognito-domain.auth.us-west-2.amazoncognito.com/oauth2/token
+COGNITO_DISCOVERY_URL=https://your-gateway-cognito-domain.auth.us-east-1.amazoncognito.com/.well-known/openid-configuration
+COGNITO_AUTH_URL=https://your-gateway-cognito-domain.auth.us-east-1.amazoncognito.com/oauth2/authorize
+COGNITO_TOKEN_URL=https://your-gateway-cognito-domain.auth.us-east-1.amazoncognito.com/oauth2/token
 COGNITO_PROVIDER_NAME=your-cognito-provider-name
 
 # Frontend Configuration (auto-populated by deploy script)
-MCP_SERVER_URL=https://your-gateway-id.gateway.bedrock-agentcore.us-west-2.amazonaws.com
+MCP_SERVER_URL=https://your-gateway-id.gateway.bedrock-agentcore.us-east-1.amazonaws.com
 
 # Agent Configuration
 AGENT_NAME=wildfire-detection-agent
@@ -56,4 +56,4 @@ DETECTION_INTERVAL_MINUTES=15
 THREAT_RADIUS_KM=10
 
 # OAuth Provider Configuration (optional)
-OAUTH_PROVIDER_ARN=arn:aws:bedrock-agentcore:us-west-2:your-account-id:oauth2-credential-provider/your-provider-name
+OAUTH_PROVIDER_ARN=arn:aws:bedrock-agentcore:us-east-1:your-account-id:oauth2-credential-provider/your-provider-name
