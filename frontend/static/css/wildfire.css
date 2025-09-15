@@ -1,0 +1,291 @@
+/* Wildfire Detection System Custom Styles */
+
+:root {
+    --fire-red: #dc3545;
+    --fire-orange: #fd7e14;
+    --fire-yellow: #ffc107;
+    --success-green: #28a745;
+    --info-blue: #17a2b8;
+    --warning-yellow: #ffc107;
+    --danger-red: #dc3545;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Fire animation */
+.fire-icon {
+    color: var(--fire-red);
+    animation: flicker 2s infinite;
+}
+
+@keyframes flicker {
+    0%, 100% { 
+        opacity: 1; 
+        text-shadow: 0 0 5px var(--fire-orange);
+    }
+    50% { 
+        opacity: 0.7; 
+        text-shadow: 0 0 10px var(--fire-red);
+    }
+}
+
+/* Gradient backgrounds */
+.bg-fire-gradient {
+    background: linear-gradient(135deg, var(--fire-red), var(--fire-orange));
+}
+
+.bg-success-gradient {
+    background: linear-gradient(135deg, var(--success-green), #20c997);
+}
+
+.bg-info-gradient {
+    background: linear-gradient(135deg, var(--info-blue), #6f42c1);
+}
+
+/* Card hover effects */
+.card-hover {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Threat level indicators */
+.threat-critical {
+    background: linear-gradient(135deg, var(--danger-red), #bd2130);
+    color: white;
+}
+
+.threat-high {
+    background: linear-gradient(135deg, var(--fire-orange), #e55a00);
+    color: white;
+}
+
+.threat-medium {
+    background: linear-gradient(135deg, var(--warning-yellow), #e0a800);
+    color: #333;
+}
+
+.threat-low {
+    background: linear-gradient(135deg, var(--success-green), #1e7e34);
+    color: white;
+}
+
+/* Alert animations */
+.alert-pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+/* Loading spinner */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--fire-red);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Status indicators */
+.status-online {
+    color: var(--success-green);
+}
+
+.status-offline {
+    color: var(--danger-red);
+}
+
+.status-warning {
+    color: var(--warning-yellow);
+}
+
+/* Map container */
+.map-container {
+    height: 500px;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Chat bubbles */
+.chat-bubble-user {
+    background: linear-gradient(135deg, var(--fire-red), var(--fire-orange));
+    color: white;
+    border-radius: 18px 18px 4px 18px;
+}
+
+.chat-bubble-assistant {
+    background: white;
+    color: #333;
+    border: 1px solid #dee2e6;
+    border-radius: 18px 18px 18px 4px;
+}
+
+/* Suggestion chips */
+.suggestion-chip {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+    background: #e9ecef;
+    border: 1px solid #dee2e6;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    text-decoration: none;
+    color: #495057;
+}
+
+.suggestion-chip:hover {
+    background: var(--fire-red);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Alert banner */
+.alert-banner {
+    background: linear-gradient(45deg, var(--danger-red), var(--fire-orange));
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+    border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Protected area cards */
+.protected-area-card {
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.protected-area-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-color: var(--fire-orange);
+}
+
+.protected-area-card.critical {
+    border-left: 4px solid var(--danger-red);
+}
+
+.protected-area-card.high {
+    border-left: 4px solid var(--fire-orange);
+}
+
+.protected-area-card.medium {
+    border-left: 4px solid var(--warning-yellow);
+}
+
+.protected-area-card.low {
+    border-left: 4px solid var(--success-green);
+}
+
+/* Statistics cards */
+.stat-card {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .suggestion-chip {
+        display: block;
+        margin: 0.25rem 0;
+        text-align: center;
+    }
+    
+    .protected-area-card {
+        margin-bottom: 1rem;
+    }
+    
+    .stat-card {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Custom scrollbar */
+.chat-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.chat-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .suggestion-chip,
+    .btn {
+        display: none !important;
+    }
+    
+    .card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+    
+    .bg-fire-gradient,
+    .bg-success-gradient,
+    .bg-info-gradient {
+        background: #f8f9fa !important;
+        color: #000 !important;
+    }
+}

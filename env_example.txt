@@ -1,0 +1,59 @@
+# Wildfire Early-Warning & Triage Agent Configuration
+# Copy this file to .env and update the values
+
+# AWS Configuration
+AWS_REGION=us-west-2
+ENDPOINT_URL=https://bedrock-agentcore-control.us-west-2.amazonaws.com
+
+# Lambda Configuration
+LAMBDA_FUNCTION_NAME=WildfireDetectionLambda
+LAMBDA_ARN=arn:aws:lambda:us-west-2:your-account-id:function:WildfireDetectionLambda
+
+# Gateway Configuration
+GATEWAY_IDENTIFIER=your-gateway-identifier
+GATEWAY_NAME=Wildfire-Detection-Gateway
+GATEWAY_DESCRIPTION=Wildfire Early-Warning and Triage Gateway
+ROLE_ARN=arn:aws:iam::your-account-id:role/YourGatewayRole
+
+# Gateway Observability (auto-populated by deploy script)
+GATEWAY_ARN=arn:aws:bedrock-agentcore:us-west-2:your-account-id:gateway/your-gateway-id
+GATEWAY_ID=your-gateway-id
+
+# Target Configuration
+TARGET_NAME=wildfire-detection-target
+TARGET_DESCRIPTION=Wildfire Detection and Threat Assessment Target
+
+# Cognito Configuration for Gateway/Runtime
+COGNITO_USERPOOL_ID=your-gateway-cognito-userpool-id
+COGNITO_APP_CLIENT_ID=your-gateway-cognito-app-client-id
+COGNITO_DOMAIN=your-gateway-cognito-domain.auth.us-west-2.amazoncognito.com
+COGNITO_CLIENT_SECRET=your-gateway-cognito-client-secret
+COGNITO_DISCOVERY_URL=https://your-gateway-cognito-domain.auth.us-west-2.amazoncognito.com/.well-known/openid-configuration
+COGNITO_AUTH_URL=https://your-gateway-cognito-domain.auth.us-west-2.amazoncognito.com/oauth2/authorize
+COGNITO_TOKEN_URL=https://your-gateway-cognito-domain.auth.us-west-2.amazoncognito.com/oauth2/token
+COGNITO_PROVIDER_NAME=your-cognito-provider-name
+
+# Frontend Configuration (auto-populated by deploy script)
+MCP_SERVER_URL=https://your-gateway-id.gateway.bedrock-agentcore.us-west-2.amazonaws.com
+
+# Agent Configuration
+AGENT_NAME=wildfire-detection-agent
+AGENT_DESCRIPTION=Wildfire Early-Warning and Triage Agent
+BEDROCK_MODEL_ID=us.anthropic.claude-3-7-sonnet-20250219-v1:0
+
+# NASA API Configuration
+NASA_API_KEY=your-nasa-api-key
+FIRMS_API_URL=https://firms.modaps.eosdis.nasa.gov/api/
+GIBS_API_URL=https://gibs.earthdata.nasa.gov/wmts/
+
+# Alert Configuration
+ALERT_EMAIL=alerts@your-organization.com
+ALERT_PHONE=+1234567890
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
+
+# Monitoring Configuration
+DETECTION_INTERVAL_MINUTES=15
+THREAT_RADIUS_KM=10
+
+# OAuth Provider Configuration (optional)
+OAUTH_PROVIDER_ARN=arn:aws:bedrock-agentcore:us-west-2:your-account-id:oauth2-credential-provider/your-provider-name
