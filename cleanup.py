@@ -10,6 +10,7 @@ import json
 import logging
 import os
 from pathlib import Path
+from bedrock_agentcore.memory import MemoryClient
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -24,6 +25,8 @@ class WildfireAgentCleanup:
         
         # Initialize AWS clients
         self.bedrock_client = boto3.client('bedrock-agentcore', region_name=region)
+        self.bedrock_control_client = boto3.client('bedrock-agentcore-control', region_name=region)
+        self.memory_client = MemoryClient(region_name=region)
         self.ecr_client = boto3.client('ecr', region_name=region)
         self.codebuild_client = boto3.client('codebuild', region_name=region)
         self.iam_client = boto3.client('iam', region_name=region)
@@ -43,33 +46,55 @@ class WildfireAgentCleanup:
     
     def cleanup_agentcore_runtime(self):
         """Clean up AgentCore Runtime"""
-        if not self.deployment_info.get('runtime_id'):
-            logger.info("No runtime ID found, skipping runtime cleanup")
-            return
+        # First try to clean up from deployment info
+        if self.deployment_info.get('runtime_id'):
+            runtime_id = self.deployment_info['runtime_id']
+            logger.info(f"Cleaning up AgentCore Runtime from deployment info: {runtime_id}")
+            
+            try:
+                self.bedrock_control_client.delete_agent_runtime(agentRuntimeId=runtime_id)
+                logger.info("✅ AgentCore Runtime deleted")
+                return
+            except Exception as e:
+                logger.warning(f"⚠️ Error deleting AgentCore Runtime from deployment info: {e}")
         
-        runtime_id = self.deployment_info['runtime_id']
-        logger.info(f"Cleaning up AgentCore Runtime: {runtime_id}")
+        # If not found in deployment info, try to discover and clean up wildfire-related runtimes
+        logger.info("No runtime ID in deployment info, searching for wildfire-related runtimes...")
         
         try:
-            self.bedrock_client.delete_runtime(runtimeId=runtime_id)
-            logger.info("✅ AgentCore Runtime deleted")
+            runtimes = self.bedrock_control_client.list_agent_runtimes()
+            wildfire_runtimes = [
+                r for r in runtimes.get('agentRuntimes', [])
+                if 'wildfire' in r.get('agentRuntimeName', '').lower() or 'nowcast' in r.get('agentRuntimeName', '').lower()
+            ]
+            
+            for runtime in wildfire_runtimes:
+                try:
+                    runtime_id = runtime['agentRuntimeId']
+                    logger.info(f"Cleaning up discovered AgentCore Runtime: {runtime_id}")
+                    self.bedrock_control_client.delete_agent_runtime(agentRuntimeId=runtime_id)
+                    logger.info(f"✅ AgentCore Runtime deleted: {runtime_id}")
+                except Exception as e:
+                    logger.warning(f"⚠️ Error deleting discovered AgentCore Runtime {runtime_id}: {e}")
+                    
         except Exception as e:
-            logger.warning(f"⚠️ Error deleting AgentCore Runtime: {e}")
+            logger.warning(f"⚠️ Error listing AgentCore Runtimes: {e}")
     
     def cleanup_agentcore_memory(self):
         """Clean up AgentCore Memory instances"""
         logger.info("Cleaning up AgentCore Memory instances...")
         
         try:
-            memories = self.bedrock_client.list_memories()
+            memories = self.memory_client.list_memories()
+            # list_memories() returns a list directly, not a dict with 'memories' key
             wildfire_memories = [
-                m for m in memories.get('memories', [])
+                m for m in memories
                 if 'WildfireNowcastAgentMultiStrategy' in m.get('id', '')
             ]
             
             for memory in wildfire_memories:
                 try:
-                    self.bedrock_client.delete_memory(memoryId=memory['id'])
+                    self.memory_client.delete_memory(memory_id=memory['id'])
                     logger.info(f"✅ Memory deleted: {memory['id']}")
                 except Exception as e:
                     logger.warning(f"⚠️ Error deleting memory {memory['id']}: {e}")
@@ -199,6 +224,8 @@ class WildfireAgentCleanup:
             '.deployment_info',
             '.runtime_id',
             '.memory_id',
+            '.agent_arn',
+            '.bedrock_agentcore.yaml',
             'Dockerfile'
         ]
         
