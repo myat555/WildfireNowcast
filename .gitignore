@@ -1,9 +1,9 @@
 # Agent deployment artifacts
 .agent_arn
 .memory_id
+.bedrock_agentcore.yaml
 .runtime_id
 .deployment_info
-.bedrock_agentcore.yaml
 
 # Python
 __pycache__/
