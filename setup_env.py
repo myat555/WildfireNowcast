@@ -32,14 +32,12 @@ def main():
         print("Please make sure you're running this script from the project root directory.")
         sys.exit(1)
     
-    print("📋 Please provide your NASA API keys:")
+    print("📋 Please provide your NASA API key:")
     print("   (Only FIRMS requires an API key - GIBS and EONET are publicly accessible)")
     print()
-    
-    # Get NASA API keys
+
+    # Get NASA API key
     nasa_firms_key = input("NASA FIRMS API Key (required): ").strip()
-    nasa_gibs_key = input("NASA GIBS API Key (optional - not required): ").strip()
-    nasa_eonet_key = input("NASA EONET API Key (optional - not required): ").strip()
     
     # Validate required key
     if not nasa_firms_key:
@@ -54,11 +52,7 @@ def main():
 # NASA FIRMS API Key (required for enhanced fire hotspot data)
 NASA_FIRMS_API_KEY={nasa_firms_key}
 
-# NASA GIBS API Key (optional, for enhanced satellite imagery access)
-NASA_GIBS_API_KEY={nasa_gibs_key or 'your_gibs_api_key_here'}
-
-# NASA EONET API Key (optional, for enhanced event data)
-NASA_EONET_API_KEY={nasa_eonet_key or 'your_eonet_api_key_here'}
+# Note: GIBS and EONET are publicly accessible - no API keys required
 
 # AWS Configuration (optional - will use AWS CLI defaults if not set)
 # AWS_REGION=us-east-1

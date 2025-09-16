@@ -97,11 +97,8 @@ class WildfireAgentDeployer:
             'NASA_FIRMS_API_KEY': 'NASA FIRMS API key (required for fire hotspot data)'
         }
         
-        # Optional NASA API keys
-        optional_keys = {
-            'NASA_GIBS_API_KEY': 'NASA GIBS API key (optional, GIBS is publicly accessible)',
-            'NASA_EONET_API_KEY': 'NASA EONET API key (optional, EONET is publicly accessible)'
-        }
+        # Optional NASA API keys (not required - services are publicly accessible)
+        optional_keys = {}
         
         missing_keys = []
         for key, description in required_keys.items():
@@ -119,13 +116,7 @@ class WildfireAgentDeployer:
             logger.error("   Note: GIBS and EONET are publicly accessible without API keys")
             sys.exit(1)
         
-        # Log optional keys status
-        for key, description in optional_keys.items():
-            value = os.getenv(key)
-            if value and value != f"your_{key.lower()}_here":
-                logger.info(f"✅ {key} configured (optional)")
-            else:
-                logger.info(f"ℹ️  {key} not configured (optional - {description})")
+        # GIBS and EONET are publicly accessible - no API keys needed
         
         logger.info("✅ NASA API keys found in .env file")
     
@@ -137,10 +128,8 @@ class WildfireAgentDeployer:
         env_file = self.project_root / ".env"
         load_dotenv(env_file)
         
-        # Get NASA API keys from environment
+        # Get NASA API keys from environment (only FIRMS required)
         nasa_firms_key = os.getenv('NASA_FIRMS_API_KEY', '')
-        nasa_gibs_key = os.getenv('NASA_GIBS_API_KEY', '')
-        nasa_eonet_key = os.getenv('NASA_EONET_API_KEY', '')
         
         dockerfile_content = f"""FROM public.ecr.aws/lambda/python:3.10
 
@@ -316,9 +305,7 @@ CMD ["wildfire_nowcast_agent.wildfire_nowcast_agent_runtime"]
                 },
                 environmentVariables={
                     'AWS_REGION': self.region,
-                    'NASA_FIRMS_API_KEY': os.getenv('NASA_FIRMS_API_KEY', ''),
-                    'NASA_GIBS_API_KEY': os.getenv('NASA_GIBS_API_KEY', ''),
-                    'NASA_EONET_API_KEY': os.getenv('NASA_EONET_API_KEY', '')
+                    'NASA_FIRMS_API_KEY': os.getenv('NASA_FIRMS_API_KEY', '')
                 }
             )
             
