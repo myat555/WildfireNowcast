@@ -1,0 +1,14 @@
+strands-agents
+strands-agents-tools
+boto3
+requests
+folium
+pillow
+matplotlib
+seaborn
+pandas
+numpy
+bedrock-agentcore
+bedrock-agentcore-starter-toolkit
+python-dotenv
+owslib

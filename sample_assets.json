@@ -1,0 +1,94 @@
+{
+  "assets": [
+    {
+      "id": "asset_001",
+      "name": "Los Angeles International Airport",
+      "type": "airport",
+      "latitude": 33.9425,
+      "longitude": -118.4081,
+      "population": 50000,
+      "description": "Major international airport serving Los Angeles"
+    },
+    {
+      "id": "asset_002", 
+      "name": "UCLA Medical Center",
+      "type": "healthcare",
+      "latitude": 34.0689,
+      "longitude": -118.4452,
+      "population": 5000,
+      "description": "Major medical center and teaching hospital"
+    },
+    {
+      "id": "asset_003",
+      "name": "Griffith Observatory",
+      "type": "critical_infrastructure",
+      "latitude": 34.1183,
+      "longitude": -118.3004,
+      "population": 1000,
+      "description": "Historic observatory and landmark"
+    },
+    {
+      "id": "asset_004",
+      "name": "Beverly Hills Residential Area",
+      "type": "residential",
+      "latitude": 34.0736,
+      "longitude": -118.4004,
+      "population": 35000,
+      "description": "High-density residential area"
+    },
+    {
+      "id": "asset_005",
+      "name": "Hollywood Studios",
+      "type": "commercial",
+      "latitude": 34.1028,
+      "longitude": -118.3287,
+      "population": 15000,
+      "description": "Major entertainment industry complex"
+    },
+    {
+      "id": "asset_006",
+      "name": "Los Angeles Power Plant",
+      "type": "power_plant",
+      "latitude": 33.7378,
+      "longitude": -118.2773,
+      "population": 500,
+      "description": "Critical power generation facility"
+    },
+    {
+      "id": "asset_007",
+      "name": "Santa Monica Pier",
+      "type": "commercial",
+      "latitude": 34.0089,
+      "longitude": -118.4973,
+      "population": 5000,
+      "description": "Popular tourist destination and commercial area"
+    },
+    {
+      "id": "asset_008",
+      "name": "Malibu Residential Community",
+      "type": "residential",
+      "latitude": 34.0259,
+      "longitude": -118.7798,
+      "population": 13000,
+      "description": "Coastal residential community"
+    },
+    {
+      "id": "asset_009",
+      "name": "Los Angeles Unified School District",
+      "type": "school",
+      "latitude": 34.0522,
+      "longitude": -118.2437,
+      "population": 25000,
+      "description": "Major school district headquarters"
+    },
+    {
+      "id": "asset_010",
+      "name": "Angeles National Forest",
+      "type": "forest",
+      "latitude": 34.2619,
+      "longitude": -118.1875,
+      "population": 100,
+      "description": "Protected forest area"
+    }
+  ]
+}
