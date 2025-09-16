@@ -19,13 +19,15 @@ from .improved_nasa_tools import (
 from .threat_tools import (
     assess_asset_threats,
     rank_fire_threats,
-    calculate_evacuation_zones
+    calculate_evacuation_zones,
+    generate_threat_summary
 )
 
 from .mapping_tools import (
     generate_fire_map,
     render_evacuation_map,
-    create_progression_map
+    create_progression_map,
+    generate_threat_visualization
 )
 
 from .ics_tools import (
@@ -54,11 +56,13 @@ __all__ = [
     "assess_asset_threats",
     "rank_fire_threats",
     "calculate_evacuation_zones",
+    "generate_threat_summary",
     
     # Mapping Tools
     "generate_fire_map",
     "render_evacuation_map",
     "create_progression_map",
+    "generate_threat_visualization",
     
     # ICS Reporting Tools
     "draft_ics_situation_report",

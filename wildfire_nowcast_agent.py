@@ -227,8 +227,9 @@ CRITICAL: Always prioritize life safety and provide immediate actionable informa
         """Process a user query using the Strands Agent"""
         try:
             # Use Strands Agent to process the query
-            response = self.agent.run(query)
-            return response
+            import asyncio
+            response = asyncio.run(self.agent.invoke_async(query))
+            return str(response)
             
         except Exception as e:
             logger.error(f"Error processing query: {e}")

@@ -51,7 +51,7 @@ This project implements an intelligent wildfire detection and response agent usi
 - **VIIRS Hotspots**: Suomi NPP and NOAA-20 satellite data
 - **Update Frequency**: Near-real-time (3-6 hour delay)
 - **Coverage**: Global wildfire monitoring
-- **API Key Required**: ✅ **Yes** (free registration at https://firms.modaps.eosdis.nasa.gov/api/)
+- **API Key Required**: ✅ **Yes** (free registration at https://firms.modaps.eosdis.nasa.gov/api/map_key)
 
 ### GIBS (Global Imagery Browse Services)
 - **WMTS Tiles**: Web Map Tile Service for basemaps

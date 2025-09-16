@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 from strands import tool
 from bedrock_agentcore.memory import MemoryClient
+from bedrock_agentcore.memory.client import StrategyType
 from botocore.exceptions import ClientError
 import hashlib
 
@@ -140,17 +141,17 @@ def create_wildfire_memory():
     # Define memory strategies for wildfire agent
     strategies = [
         {
-            StrategyType.INCIDENT_TRACKING.value: {
-                "name": "IncidentTracking",
-                "description": "Tracks active wildfire incidents, asset locations, and threat assessments",
-                "namespaces": ["wildfire/incident/{incidentId}/tracking"]
+            "semanticMemoryStrategy": {
+                "name": "WildfireSemantic",
+                "description": "Stores fire behavior patterns, historical data, and response strategies",
+                "namespaces": ["wildfire/semantic"]
             }
         },
         {
-            StrategyType.SEMANTIC.value: {
-                "name": "WildfireSemantic",
-                "description": "Stores fire behavior patterns, historical data, and response strategies",
-                "namespaces": ["wildfire/semantic/{incidentId}/patterns"]
+            "summaryMemoryStrategy": {
+                "name": "IncidentSummary",
+                "description": "Tracks active wildfire incidents, asset locations, and threat assessments",
+                "namespaces": ["wildfire/incident/{sessionId}"]
             }
         }
     ]

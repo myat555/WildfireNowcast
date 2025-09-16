@@ -8,7 +8,7 @@ import json
 import logging
 import time
 from datetime import datetime
-from wildfire_nowcast_agent import wildfire_nowcast_agent_local
+from wildfire_nowcast_agent import wildfire_agent
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -22,7 +22,8 @@ def test_agent_query(query: str, description: str):
     
     try:
         start_time = time.time()
-        response = wildfire_nowcast_agent_local({"prompt": query})
+        # Use the correct method to process the query
+        response = wildfire_agent.process_query(query)
         end_time = time.time()
         
         logger.info(f"Response ({end_time - start_time:.2f}s):")
