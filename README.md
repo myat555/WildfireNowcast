@@ -1,21 +1,9 @@
 # 🔥 Wildfire Nowcast Agent
 
-## 🚀 **Status: DEPLOYED & OPERATIONAL**
-
-**✅ Successfully deployed to AWS Bedrock AgentCore**  
-**✅ Real-time NASA data integration working**  
-**✅ Multi-strategy memory system active**  
-**✅ Enhanced tools with full NASA compliance**
 
 ## Overview
 
 This project implements an intelligent wildfire detection and response agent using Amazon Bedrock AgentCore with the Strands Agent framework. The agent provides real-time wildfire monitoring, threat assessment, live mapping, and Incident Command System (ICS) update generation using NASA Earth observation data.
-
-### 🎯 **Current Deployment**
-- **Runtime ID**: `wildfire_nowcast_agent_runtime-XXXXXXXXXX`
-- **Memory ID**: `WildfireNowcastAgentMultiStrategy-XXXXXXXXXX`
-- **Region**: us-east-1
-- **Status**: ✅ Active and processing queries
 
 ## Use Case Architecture
 
@@ -32,30 +20,30 @@ This project implements an intelligent wildfire detection and response agent usi
 
 ## Features
 
-### 🔥 Real-Time Wildfire Detection ✅ **WORKING**
+### 🔥 Real-Time Wildfire Detection 
 - **Enhanced NASA FIRMS Integration**: Near-real-time MODIS/VIIRS hotspot detection with improved data processing
 - **Automated Hotspot Analysis**: Identifies new fire hotspots and tracks progression
 - **Multi-Source Validation**: Cross-references multiple satellite data sources
 - **Live Demo**: `"Check for wildfire hotspots in California"` → Real NASA data in 15.75s
 
-### 🎯 Threat Assessment & Asset Protection ✅ **WORKING**
+### 🎯 Threat Assessment & Asset Protection 
 - **Asset Proximity Analysis**: Calculates distance from hotspots to critical infrastructure
 - **Risk Ranking Algorithm**: Prioritizes threats based on fire intensity and asset value
 - **Evacuation Zone Mapping**: Identifies areas requiring immediate attention
 - **Enhanced Tools**: Improved threat assessment with better data processing
 
-### 🗺️ Live Mapping & Visualization ✅ **WORKING**
+### 🗺️ Live Mapping & Visualization 
 - **Enhanced GIBS Integration**: Real-time WMS/WMTS with OWSLib compliance
 - **Interactive Fire Maps**: Dynamic visualization of fire progression
 - **Multi-Layer Support**: Combines satellite imagery, fire perimeters, and asset locations
 - **NASA Compliant**: Follows official NASA GIBS documentation exactly
 
-### 📋 Incident Command System (ICS) Integration ✅ **WORKING**
+### 📋 Incident Command System (ICS) Integration 
 - **Automated ICS Updates**: Generates standardized incident reports
 - **Situation Reports**: Creates comprehensive status updates for command staff
 - **Resource Allocation**: Recommends resource deployment based on threat analysis
 
-### 🧠 Advanced Memory Management ✅ **WORKING**
+### 🧠 Advanced Memory Management
 - **Multi-Strategy Memory**: Semantic + Summary strategies active
 - **Incident Tracking**: Maintains persistent memory of ongoing wildfires
 - **Historical Analysis**: Learns from past incidents to improve predictions
@@ -68,7 +56,7 @@ This project implements an intelligent wildfire detection and response agent usi
 - **VIIRS Hotspots**: Suomi NPP and NOAA-20 satellite data
 - **Update Frequency**: Near-real-time (3-6 hour delay)
 - **Coverage**: Global wildfire monitoring
-- **API Key Required**: ✅ **Yes** (free registration at https://firms.modaps.eosdis.nasa.gov/api/map_key)
+- **API Key Required**: ✅ (free registration at https://firms.modaps.eosdis.nasa.gov/api/map_key)
 
 ### GIBS (Global Imagery Browse Services)
 - **WMTS Tiles**: Web Map Tile Service for basemaps
