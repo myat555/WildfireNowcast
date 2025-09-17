@@ -15,7 +15,6 @@ This project implements an intelligent wildfire detection and response agent usi
 | Agent type | Multi-Agent Orchestration |
 | Use case components | NASA Data Integration, Threat Assessment, Live Mapping, ICS Reporting |
 | Use case vertical | Emergency Management & Environmental Monitoring |
-| Example complexity | Advanced |
 | SDK used | Strands Agents SDK, Amazon Bedrock AgentCore |
 
 ## Features
