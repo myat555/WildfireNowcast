@@ -199,20 +199,20 @@ uv run python test_agent.py --query "Check for wildfire hotspots in California"
 │                    Wildfire Nowcast Agent                       │
 ├─────────────────────────────────────────────────────────────────┤
 │  Strands Agent Framework                                        │
-│  ├── Orchestrator Agent                                        │
-│  ├── Data Ingestion Agent                                      │
+│  ├── Orchestrator Agent                                         │
+│  ├── Data Ingestion Agent                                       │
 │  ├── Threat Analysis Agent                                      │
-│  ├── Mapping Agent                                             │
-│  └── ICS Reporting Agent                                       │
+│  ├── Mapping Agent                                              │
+│  └── ICS Reporting Agent                                        │
 ├─────────────────────────────────────────────────────────────────┤
 │  AgentCore Multi-Strategy Memory                                │
-│  ├── INCIDENT_TRACKING: Active wildfire incidents              │
-│  └── SEMANTIC: Fire behavior patterns & historical data        │
+│  ├── INCIDENT_TRACKING: Active wildfire incidents               │
+│  └── SEMANTIC: Fire behavior patterns & historical data         │
 ├─────────────────────────────────────────────────────────────────┤
 │  NASA Data Sources                                              │
-│  ├── FIRMS API (MODIS/VIIRS hotspots)                          │
-│  ├── GIBS WMTS (Basemaps & overlays)                           │
-│  └── EONET API (Event context)                                 │
+│  ├── FIRMS API (MODIS/VIIRS hotspots)                           │
+│  ├── GIBS WMTS (Basemaps & overlays)                            │
+│  └── EONET API (Event context)                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
