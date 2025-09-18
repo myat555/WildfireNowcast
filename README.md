@@ -110,8 +110,6 @@ uv run python setup_env.py
 # Option B: Manual setup
 cp .env.template .env
 # Edit .env and add your NASA API keys
-# Required: NASA_FIRMS_API_KEY
-# Note: GIBS and EONET are publicly accessible - no API keys needed
 ```
 
 4. **Install Dependencies**
@@ -159,9 +157,7 @@ The agent is currently operational and processing real queries:
 ```bash
 # Example: Real-time wildfire detection
 uv run python test_agent.py --query "Check for wildfire hotspots in California"
-
 # Output: Real NASA FIRMS data showing current fire status
-# Response time: ~15 seconds with live satellite data
 ```
 
 ## Usage Examples
@@ -203,7 +199,7 @@ uv run python test_agent.py --query "Check for wildfire hotspots in California"
 │                    Wildfire Nowcast Agent                       │
 ├─────────────────────────────────────────────────────────────────┤
 │  Strands Agent Framework                                        │
-│  ├── Orchestrator Agent (Claude Sonnet 4)                      │
+│  ├── Orchestrator Agent                                        │
 │  ├── Data Ingestion Agent                                      │
 │  ├── Threat Analysis Agent                                      │
 │  ├── Mapping Agent                                             │
@@ -364,6 +360,10 @@ The deployment script automatically creates a role with:
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+
+## 🌐 Frontend Dashboard
+
+A professional React-based frontend is available in the `frontend/` directory that showcases the agent's AI capabilities through an interactive interface. See [frontend/README.md](frontend/README.md) for setup and usage instructions.
 
 ## Acknowledgments
 
