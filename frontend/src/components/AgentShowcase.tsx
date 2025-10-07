@@ -1,24 +1,20 @@
 "use client"
 
-import * as React from "react"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { 
-  Bot, 
-  MessageSquare, 
-  Send, 
-  Loader2, 
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import {
+  Bot,
+  MessageSquare,
+  Send,
+  Loader2,
   Sparkles,
   Brain,
   Zap,
   Shield,
   MapPin,
   AlertTriangle,
-  TrendingUp,
-  Clock,
-  CheckCircle,
-  XCircle,
-  Eye,
   Download,
   Copy,
   RefreshCw
@@ -27,8 +23,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 import { AgentIntelligence } from "./AgentIntelligence"
 
@@ -162,11 +156,11 @@ export function AgentShowcase() {
   const [selectedCapability, setSelectedCapability] = useState<AgentCapability | null>(null)
   const [agentStatus, setAgentStatus] = useState<"idle" | "thinking" | "active">("idle")
 
-  // Simulate agent processing
+  // Process agent query with real API
   const processQuery = async (query: string) => {
     setIsProcessing(true)
     setAgentStatus("thinking")
-    
+
     // Add user message
     const userMessage: AgentMessage = {
       id: Date.now().toString(),
@@ -174,29 +168,64 @@ export function AgentShowcase() {
       content: query,
       timestamp: new Date()
     }
-    
+
     setMessages(prev => [...prev, userMessage])
-    
-    // Simulate agent thinking time
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // Generate agent response based on query
-    const agentResponse = generateAgentResponse(query)
-    
-    const agentMessage: AgentMessage = {
-      id: (Date.now() + 1).toString(),
-      type: "agent",
-      content: agentResponse.content,
-      timestamp: new Date(),
-      status: "success",
-      toolsUsed: agentResponse.toolsUsed,
-      dataInsights: agentResponse.dataInsights,
-      recommendations: agentResponse.recommendations
+
+    try {
+      // Call real backend API
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+      const response = await fetch(`${apiUrl}/api/agent-query`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: query,
+          enable_trace: false
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`)
+      }
+
+      const data = await response.json()
+
+      const agentMessage: AgentMessage = {
+        id: (Date.now() + 1).toString(),
+        type: "agent",
+        content: data.response || data.message || "No response from agent",
+        timestamp: new Date(),
+        status: "success",
+        toolsUsed: data.tools_used || [],
+        dataInsights: data.data_insights || [],
+        recommendations: data.recommendations || []
+      }
+
+      setMessages(prev => [...prev, agentMessage])
+      setAgentStatus("active")
+    } catch (error) {
+      console.error("Agent query error:", error)
+
+      // Fallback to mock response on error
+      const agentResponse = generateAgentResponse(query)
+
+      const agentMessage: AgentMessage = {
+        id: (Date.now() + 1).toString(),
+        type: "agent",
+        content: `⚠️ Using demo mode. ${agentResponse.content}`,
+        timestamp: new Date(),
+        status: "success",
+        toolsUsed: agentResponse.toolsUsed,
+        dataInsights: agentResponse.dataInsights,
+        recommendations: agentResponse.recommendations
+      }
+
+      setMessages(prev => [...prev, agentMessage])
+      setAgentStatus("idle")
+    } finally {
+      setIsProcessing(false)
     }
-    
-    setMessages(prev => [...prev, agentMessage])
-    setIsProcessing(false)
-    setAgentStatus("active")
   }
 
   const generateAgentResponse = (query: string) => {
@@ -282,15 +311,45 @@ export function AgentShowcase() {
   }
 
   const handleExampleClick = (example: string) => {
-    setInputValue(example)
+    if (!isProcessing) {
+      processQuery(example)
+    }
+  }
+
+  const handleCapabilityClick = (capability: AgentCapability) => {
+    setSelectedCapability(capability)
+    // Auto-fill and submit the example query
+    setInputValue(capability.example)
+    // Optionally auto-submit after a brief delay
+    setTimeout(() => {
+      if (!isProcessing) {
+        processQuery(capability.example)
+        setInputValue("")
+      }
+    }, 100)
   }
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
   }
 
+  const handleInsightClick = (insight: AgentInsight) => {
+    // Generate a query based on the insight
+    const queries: Record<string, string> = {
+      'threat': `Provide detailed threat assessment for ${insight.title}`,
+      'weather': `Analyze weather impact on wildfire spread: ${insight.title}`,
+      'resource': `Generate resource allocation plan for ${insight.title}`,
+      'evacuation': `Calculate evacuation zones and routes for ${insight.title}`
+    }
+
+    const query = queries[insight.type] || `Tell me more about: ${insight.title}`
+    if (!isProcessing) {
+      processQuery(query)
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-4 space-y-6">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 pb-4 space-y-6">
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
@@ -351,12 +410,12 @@ export function AgentShowcase() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className={`p-4 rounded-lg border cursor-pointer transition-all ${
+                  className={`p-4 rounded-lg border transition-all hover:shadow-md ${
                     selectedCapability?.name === capability.name
                       ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
                       : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
-                  }`}
-                  onClick={() => setSelectedCapability(capability)}
+                  } ${isProcessing ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                  onClick={() => !isProcessing && handleCapabilityClick(capability)}
                 >
                   <div className="flex items-start gap-3">
                     <div className={`p-2 rounded-lg ${
@@ -383,8 +442,11 @@ export function AgentShowcase() {
                       <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
                         {capability.description}
                       </p>
-                      <div className="text-xs text-blue-600 dark:text-blue-400 font-mono">
+                      <div className="text-xs text-blue-600 dark:text-blue-400 font-mono mb-1">
                         "{capability.example}"
+                      </div>
+                      <div className="text-xs text-green-600 dark:text-green-400 font-medium">
+                        Click to run →
                       </div>
                     </div>
                   </div>
@@ -411,7 +473,10 @@ export function AgentShowcase() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="p-3 rounded-lg border border-slate-200 dark:border-slate-700"
+                  className={`p-3 rounded-lg border border-slate-200 dark:border-slate-700 transition-all hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 ${
+                    isProcessing ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                  }`}
+                  onClick={() => !isProcessing && handleInsightClick(insight)}
                 >
                   <div className="flex items-start gap-3">
                     <div className={`w-2 h-2 rounded-full mt-2 ${
@@ -424,9 +489,14 @@ export function AgentShowcase() {
                       <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                         {insight.description}
                       </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Progress value={insight.confidence} className="flex-1 h-1" />
-                        <span className="text-xs text-slate-500">{insight.confidence}%</span>
+                      <div className="flex items-center justify-between mt-2">
+                        <div className="flex items-center gap-2 flex-1">
+                          <Progress value={insight.confidence} className="flex-1 h-1" />
+                          <span className="text-xs text-slate-500">{insight.confidence}%</span>
+                        </div>
+                        <span className="text-xs text-blue-600 dark:text-blue-400 font-medium ml-2">
+                          Ask agent →
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -439,7 +509,7 @@ export function AgentShowcase() {
         {/* Center Column - Chat Interface */}
         <div className="lg:col-span-2 space-y-6">
           {/* Chat Messages */}
-          <Card className="h-[500px] flex flex-col">
+          <Card className="h-[700px] flex flex-col">
             <CardHeader className="flex-shrink-0">
               <CardTitle className="flex items-center gap-2">
                 <MessageSquare className="h-5 w-5" />
@@ -449,8 +519,8 @@ export function AgentShowcase() {
                 Interact with the WildfireNowcast Agent
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex-1 flex flex-col">
-              <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+            <CardContent className="flex-1 flex flex-col overflow-hidden">
+              <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
                 <AnimatePresence>
                   {messages.map((message) => (
                     <motion.div
@@ -460,7 +530,7 @@ export function AgentShowcase() {
                       exit={{ opacity: 0, y: -20 }}
                       className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
                     >
-                      <div className={`max-w-[80%] p-3 rounded-lg ${
+                      <div className={`max-w-[85%] p-3 rounded-lg break-words ${
                         message.type === "user"
                           ? "bg-blue-500 text-white"
                           : "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100"
@@ -470,7 +540,11 @@ export function AgentShowcase() {
                             <Bot className="h-4 w-4 mt-0.5 flex-shrink-0" />
                           )}
                           <div className="flex-1">
-                            <p className="text-sm">{message.content}</p>
+                            <div className="text-sm prose prose-sm dark:prose-invert max-w-none">
+                              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                {message.content}
+                              </ReactMarkdown>
+                            </div>
                             {message.toolsUsed && (
                               <div className="mt-2 space-y-1">
                                 <p className="text-xs font-medium">Tools Used:</p>
@@ -556,7 +630,8 @@ export function AgentShowcase() {
                       variant="outline"
                       size="sm"
                       onClick={() => handleExampleClick(query)}
-                      className="text-xs"
+                      disabled={isProcessing}
+                      className="text-xs hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
                     >
                       {query}
                     </Button>

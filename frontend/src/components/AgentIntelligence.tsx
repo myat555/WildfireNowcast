@@ -1,8 +1,7 @@
 "use client"
 
-import * as React from "react"
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState } from "react"
+import { motion } from "framer-motion"
 import { 
   Brain, 
   Zap, 
@@ -143,14 +142,6 @@ export function AgentIntelligence() {
     setCurrentThought(null)
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "thinking": return "text-blue-500"
-      case "analyzing": return "text-yellow-500"
-      case "completed": return "text-green-500"
-      default: return "text-gray-500"
-    }
-  }
 
   const getStatusIcon = (status: string) => {
     switch (status) {

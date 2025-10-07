@@ -1,0 +1,87 @@
+# Frontend files (not needed in Lambda container)
+frontend/
+frontend/**
+
+# Node modules
+node_modules/
+**/node_modules/
+
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE and editor files
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+.DS_Store
+
+# Documentation and non-essential files
+*.md
+!README.md
+docs/
+*.txt
+!requirements.txt
+
+# Deployment artifacts
+.deployment_info
+.runtime_id
+.agent_arn
+.memory_id
+ec2-instance-info.txt
+*.pem
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+logs/
+
+# Test files
+tests/
+test/
+*_test.py
+test_*.py
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Docker files themselves
+Dockerfile
+.dockerignore
+
+# Scripts not needed in container
+deploy.py
+cleanup.py
+deploy_from_ec2.sh
+cleanup_ec2.sh
+
+# Environment files (secrets passed at runtime)
+.env
+.env.*
+!.env.template
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/

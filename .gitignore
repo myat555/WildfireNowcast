@@ -45,6 +45,7 @@ venv.bak/
 # IDE
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 
@@ -57,7 +58,18 @@ Thumbs.db
 
 # Docker (auto-generated during deployment)
 Dockerfile
-.dockerignore
 
 # ASH Security Scanner
 .ash/
+
+# EC2 deployment files
+ec2-instance-info.txt
+wildfire-deploy-key.pem
+*.pem
+wildfire-deploy.tar.gz
+
+# Backend
+backend/.env
+backend/venv/
+backend/__pycache__/
+backend/*.log

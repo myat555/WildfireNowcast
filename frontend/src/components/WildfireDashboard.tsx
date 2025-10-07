@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { useState, useEffect, useRef, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
@@ -12,12 +11,8 @@ import {
   Droplets,
   Eye,
   Activity,
-  TrendingUp,
-  TrendingDown,
   MapPin,
-  Calendar,
   Clock,
-  Filter,
   Search,
   Settings,
   Bell,
@@ -42,22 +37,20 @@ import {
   ChartTooltipContent,
   ChartConfig
 } from "@/components/ui/chart"
-import { 
-  LineChart, 
-  Line, 
-  AreaChart, 
-  Area, 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
+import {
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
   ResponsiveContainer,
   PieChart,
   Pie,
   Cell
 } from "recharts"
-import createGlobe, { COBEOptions } from "cobe"
+import createGlobe from "cobe"
 
 // Types
 interface WildfireData {
@@ -82,24 +75,6 @@ interface WildfireData {
   }
 }
 
-interface WeatherData {
-  temperature: number
-  humidity: number
-  windSpeed: number
-  windDirection: string
-  pressure: number
-  visibility: number
-}
-
-interface ThreatAssessment {
-  overall: number
-  factors: {
-    weather: number
-    terrain: number
-    vegetation: number
-    proximity: number
-  }
-}
 
 // Mock data
 const mockWildfires: WildfireData[] = [
@@ -202,7 +177,7 @@ const chartConfig: ChartConfig = {
 // Globe Component
 function Globe3D({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [globe, setGlobe] = useState<any>(null)
+  const [, setGlobe] = useState<any>(null)
 
   useEffect(() => {
     if (!canvasRef.current) return
@@ -299,7 +274,7 @@ export function WildfireMonitoringDashboard() {
   const avgContainment = Math.round(mockWildfires.reduce((acc, f) => acc + f.containment, 0) / totalFires)
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-4 space-y-6">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 pb-4 space-y-6">
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>

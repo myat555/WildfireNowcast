@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { WildfireDashboard } from './components/WildfireDashboard'
+import WildfireDashboard from './components/WildfireDashboard'
 import { AgentShowcase } from './components/AgentShowcase'
 import { Button } from './components/ui/button'
 import { Moon, Sun, Bot, BarChart3 } from 'lucide-react'
@@ -57,7 +57,9 @@ function App() {
         </div>
 
         {/* Main Content */}
-        {activeView === 'agent' ? <AgentShowcase /> : <WildfireDashboard />}
+        <div className="pt-20">
+          {activeView === 'agent' ? <AgentShowcase /> : <WildfireDashboard />}
+        </div>
       </div>
     </div>
   )
