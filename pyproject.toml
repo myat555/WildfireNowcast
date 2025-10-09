@@ -20,6 +20,11 @@ dependencies = [
     "bedrock-agentcore-starter-toolkit",
     "python-dotenv",
     "owslib",
+    "fastapi>=0.118.2",
+    "uvicorn[standard]>=0.35.0",
+    "websockets>=15.0.1",
+    "pydantic>=2.11.9",
+    "aiohttp>=3.9.0",
 ]
 
 [project.optional-dependencies]

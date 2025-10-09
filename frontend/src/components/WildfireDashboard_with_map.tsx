@@ -50,6 +50,8 @@ import {
   Pie,
   Cell
 } from "recharts"
+import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css'
 
 // API Configuration
 const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
@@ -115,17 +117,6 @@ interface NASASummary {
   }
   hotspots?: NASAHotspot[]
   eonet_events?: any[]
-}
-
-interface WeatherData {
-  temperature: number
-  humidity: number
-  wind_speed: number
-  wind_direction: string
-  pressure: number
-  visibility: number
-  description: string
-  icon: string
 }
 
 interface ChartDataPoint {
@@ -247,7 +238,6 @@ export function WildfireMonitoringDashboard() {
   const [nasaSummary, setNasaSummary] = useState<NASASummary | null>(null)
   const [chartData, setChartData] = useState<ChartDataPoint[]>([])
   const [severityData, setSeverityData] = useState<SeverityDataPoint[]>([])
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
 
   // Fetch data from API
   const fetchData = async () => {
@@ -311,31 +301,10 @@ export function WildfireMonitoringDashboard() {
       // Generate severity distribution
       generateSeverityData(wildfiresData)
 
-      // Fetch real weather data for California center (approximate)
-      await fetchWeatherData(37.0, -120.0)
-
       setLastUpdate(new Date())
     } catch (err) {
       console.error('Error fetching data:', err)
       setError(err instanceof Error ? err.message : 'Failed to fetch data')
-    }
-  }
-
-  // Fetch real-time weather data
-  const fetchWeatherData = async (lat: number, lon: number) => {
-    try {
-      const weatherResponse = await fetch(`${apiUrl}/api/weather-by-coords?lat=${lat}&lon=${lon}`)
-
-      if (!weatherResponse.ok) {
-        console.warn('Weather API failed, using fallback data')
-        return
-      }
-
-      const weather = await weatherResponse.json()
-      setWeatherData(weather)
-    } catch (err) {
-      console.error('Error fetching weather data:', err)
-      // Don't set error state, just log - weather is optional
     }
   }
 
@@ -419,26 +388,16 @@ export function WildfireMonitoringDashboard() {
     ? Math.round(wildfires.reduce((acc, f) => acc + f.containment, 0) / totalFires)
     : 0
 
-  // Use real weather data if available, otherwise calculate from fire data
-  const avgTemperature = weatherData
-    ? Math.round(weatherData.temperature)
-    : totalFires > 0
+  // Calculate average weather conditions
+  const avgTemperature = totalFires > 0
     ? Math.round(wildfires.reduce((acc, f) => acc + f.temperature, 0) / totalFires)
     : 75
-  const avgHumidity = weatherData
-    ? Math.round(weatherData.humidity)
-    : totalFires > 0
+  const avgHumidity = totalFires > 0
     ? Math.round(wildfires.reduce((acc, f) => acc + f.humidity, 0) / totalFires)
     : 20
-  const avgWindSpeed = weatherData
-    ? Math.round(weatherData.wind_speed)
-    : totalFires > 0
+  const avgWindSpeed = totalFires > 0
     ? Math.round(wildfires.reduce((acc, f) => acc + f.windSpeed, 0) / totalFires)
     : 15
-  const windDirection = weatherData?.wind_direction || "NW"
-  const visibility = weatherData
-    ? weatherData.visibility.toFixed(1)
-    : extremeFires > 2 ? '1.5' : '3.0'
 
   if (isLoading) {
     return (
@@ -783,16 +742,64 @@ export function WildfireMonitoringDashboard() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[400px] rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                <div className="text-center space-y-2">
-                  <MapPin className="h-12 w-12 text-slate-400 mx-auto" />
-                  <p className="text-lg font-medium text-slate-600 dark:text-slate-400">
-                    Map will be displayed here
-                  </p>
-                  <p className="text-sm text-slate-500 dark:text-slate-500">
-                    Interactive fire location map coming soon
-                  </p>
-                </div>
+              <div className="h-[400px] rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800">
+                <MapContainer
+                  center={[36.7783, -119.4179]}
+                  zoom={6}
+                  style={{ height: '100%', width: '100%' }}
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  {wildfires.map((fire) => {
+                    const color =
+                      fire.severity === 'extreme' ? '#dc2626' :
+                      fire.severity === 'high' ? '#f97316' :
+                      fire.severity === 'moderate' ? '#eab308' : '#22c55e'
+
+                    const radius =
+                      fire.severity === 'extreme' ? 12 :
+                      fire.severity === 'high' ? 10 :
+                      fire.severity === 'moderate' ? 8 : 6
+
+                    return (
+                      <CircleMarker
+                        key={fire.id}
+                        center={fire.coordinates}
+                        radius={radius}
+                        pathOptions={{
+                          color: color,
+                          fillColor: color,
+                          fillOpacity: 0.6,
+                          weight: 2
+                        }}
+                      >
+                        <Popup>
+                          <div className="space-y-2 min-w-[200px]">
+                            <h3 className="font-bold text-lg">{fire.name}</h3>
+                            <div className="space-y-1 text-sm">
+                              <p><strong>Location:</strong> {fire.location}</p>
+                              <p><strong>Severity:</strong> {fire.severity}</p>
+                              <p><strong>Size:</strong> {fire.size.toLocaleString()} acres</p>
+                              <p><strong>Containment:</strong> {fire.containment}%</p>
+                              <p><strong>Threat Level:</strong> {fire.threatLevel}/10</p>
+                              {fire.brightness && <p><strong>Brightness:</strong> {fire.brightness.toFixed(1)}K</p>}
+                              {fire.frp && <p><strong>FRP:</strong> {fire.frp.toFixed(1)} MW</p>}
+                            </div>
+                            <Button
+                              size="sm"
+                              onClick={() => setSelectedFire(fire)}
+                              className="w-full mt-2"
+                            >
+                              View Details
+                            </Button>
+                          </div>
+                        </Popup>
+                      </CircleMarker>
+                    )
+                  })}
+                </MapContainer>
               </div>
             </CardContent>
           </Card>
@@ -803,17 +810,9 @@ export function WildfireMonitoringDashboard() {
               <CardTitle className="flex items-center gap-2">
                 <Wind className="h-5 w-5" />
                 Weather Conditions
-                {weatherData && (
-                  <Badge variant="outline" className="ml-auto text-xs">
-                    Live Data
-                  </Badge>
-                )}
               </CardTitle>
               <CardDescription>
-                {weatherData
-                  ? `Real-time weather: ${weatherData.description}`
-                  : "Current environmental factors affecting fire behavior"
-                }
+                Current environmental factors affecting fire behavior
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -839,9 +838,7 @@ export function WildfireMonitoringDashboard() {
                     <Wind className="h-4 w-4 text-green-500" />
                     <span className="text-sm font-medium">Wind Speed</span>
                   </div>
-                  <div className="text-2xl font-bold text-green-600">
-                    {avgWindSpeed} mph {windDirection}
-                  </div>
+                  <div className="text-2xl font-bold text-green-600">{avgWindSpeed} mph</div>
                 </div>
 
                 <div className="space-y-2">
@@ -850,7 +847,7 @@ export function WildfireMonitoringDashboard() {
                     <span className="text-sm font-medium">Visibility</span>
                   </div>
                   <div className="text-2xl font-bold text-purple-600">
-                    {visibility} mi
+                    {extremeFires > 2 ? '1.5 mi' : '3.0 mi'}
                   </div>
                 </div>
               </div>

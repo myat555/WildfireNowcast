@@ -7,6 +7,7 @@ FastAPI backend server that connects the frontend to AWS Bedrock Agent and NASA 
 - ✅ Real-time agent communication via REST and WebSocket
 - ✅ Streaming responses for live updates
 - ✅ NASA FIRMS, GIBS, and EONET API integration
+- ✅ **Real-time weather data integration (OpenWeather API)**
 - ✅ Threat assessment and ICS reporting
 - ✅ Session management
 - ✅ CORS support for frontend integration
@@ -32,6 +33,10 @@ cp .env.example .env
 - `BEDROCK_AGENT_ID` - Your Bedrock Agent ID from deployment
 - `AWS_ACCESS_KEY_ID` - AWS access key
 - `AWS_SECRET_ACCESS_KEY` - AWS secret key
+- `NASA_FIRMS_API_KEY` - NASA FIRMS API key for fire data
+
+**Optional variables:**
+- `OPENWEATHER_API_KEY` - OpenWeather API key for real-time weather (see [WEATHER_INTEGRATION.md](../WEATHER_INTEGRATION.md))
 
 **Get your Agent ID:**
 ```bash
@@ -91,8 +96,14 @@ curl -X POST http://localhost:8000/api/agent-query \
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | `/api/threat-assessment` | Assess infrastructure threats |
+| POST | `/api/rank-threats` | Rank fire threats by criteria |
+| POST | `/api/evacuation-zones` | Calculate evacuation zones |
 | POST | `/api/fire-map` | Generate fire map |
+| POST | `/api/evacuation-map` | Generate evacuation map |
+| POST | `/api/progression-map` | Generate fire progression map |
 | POST | `/api/ics-report` | Generate ICS report |
+| POST | `/api/resource-recommendations` | Get resource recommendations |
+| GET | `/api/nasa-summary` | Get comprehensive NASA data summary |
 
 ## API Documentation
 
